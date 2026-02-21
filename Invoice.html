@@ -250,6 +250,12 @@ function tampilkanData(index) {
     }
 
 
+   // Tambahkan variabel untuk tanggal selesai
+    let tglSelesaiHtml = "";
+    if (status === "SELESAI" && data.tgl_selesai) {
+        tglSelesaiHtml = `<div><span class="label" style="color:#166534">Tgl Selesai</span><span class="value">${data.tgl_selesai}</span></div>`;
+    }
+
     container.innerHTML = `
         <div class="invoice-card">
             <div class="status-badge ${status === 'SELESAI' ? 'status-selesai' : 'status-proses'}">${status}</div>
@@ -264,6 +270,7 @@ function tampilkanData(index) {
                 </div>
                 <div><span class="label">Tgl Masuk</span><span class="value">${data.tgl_pesan || "-"}</span></div>
                 <div><span class="label">Estimasi</span><span class="value">${data.tgl_estimasi || "-"}</span></div>
+                ${tglSelesaiHtml} 
             </div>
             ${priceHtml}
         </div>
