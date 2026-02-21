@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://arifabdrohim52-sys.github.io/Jokowords/Invoice.html">
+    <meta property="og:title" content="JOKOWORDS - Hilirisasi Dokumen">
+    <meta property="og:description" content="Cek progres pesanan dan hilirisasi dokumen Anda di Jokowords.">
+    <meta property="og:image" content="https://arifabdrohim52-sys.github.io/Jokowords/1.png">
+    <meta property="og:image:type" content="image/png">
+    <title>JOKOWORDS - Hilirisasi Dokumen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #059669;
+            --dark: #064e3b;
+            --glass: rgba(255, 255, 255, 0.96);
+            --border: #e2e8f0;
+            --warning: #f59e0b;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0; padding: 20px 0;
+            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh;
+            background: url('1.webp') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        body::before {
+            content: "";
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.65); 
+            z-index: -1;
+        }
+
+        .wrapper { width: 95%; max-width: 500px; text-align: center; }
+
+        .brand-header { margin-bottom: 35px; }
+        .logo-box { width: 100px; height: 100px; margin: 0 auto 15px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); }
+        .logo-box img { width: 100%; height: 100%; object-fit: contain; }
+        h1 { margin: 0; font-weight: 800; color: #ffffff; font-size: 34px; letter-spacing: -1px; }
+        .subtitle { color: #d1d5db; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+
+        .form-group { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
+        .input-wrapper { position: relative; }
+        input {
+            width: 100%; padding: 20px 20px 20px 60px; border: none; border-radius: 20px;
+            font-size: 16px; outline: none; background: var(--glass);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); font-family: inherit;
+        }
+        .fa-user-tag { position: absolute; left: 25px; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: 20px; }
+
+        button {
+            width: 100%; background: var(--primary); color: white; border: none;
+            padding: 20px; border-radius: 20px; font-weight: 800; cursor: pointer;
+            transition: 0.4s; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        #result-container { display: none; margin-top: 30px; animation: fadeInUp 0.5s ease-out; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .invoice-card { 
+            background: var(--glass); border-radius: 28px; padding: 30px; text-align: left;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        /* Multiple Results Style */
+        .selection-box { background: var(--glass); padding: 20px; border-radius: 25px; text-align: left; }
+        .select-item {
+            background: #f8fafc; padding: 15px; border-radius: 15px; margin-top: 10px;
+            cursor: pointer; border: 1px solid var(--border); transition: 0.3s;
+            font-weight: 700; color: var(--dark); display: flex; justify-content: space-between; align-items: center;
+        }
+        .select-item:hover { border-color: var(--primary); background: #f0fdf4; }
+
+        /* Badge & Grid */
+        .status-badge { display: inline-block; padding: 8px 16px; border-radius: 50px; font-size: 12px; font-weight: 800; margin-bottom: 20px; text-transform: uppercase; }
+        .status-proses { background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; animation: pulse-blink 1.5s infinite; }
+        .status-selesai { background: #dcfce7; color: #166534; border: 1px solid #166534; animation: glow-success 2s infinite; }
+        
+        @keyframes pulse-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes glow-success { 0%, 100% { box-shadow: 0 0 5px #10b981; } 50% { box-shadow: 0 0 15px #10b981; } }
+
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .label { font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 2px; }
+        .value { font-size: 14px; color: var(--dark); font-weight: 700; }
+        .service-list { grid-column: span 2; background: #f8fafc; padding: 18px; border-radius: 20px; margin: 10px 0; border: 1px solid var(--border); }
+        .detail-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #e2e8f0; }
+        .total-section { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 15px; }
+        .final-price { font-size: 30px; color: var(--primary); font-weight: 900; }
+        .btn-download { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--dark); color: white; text-decoration: none; padding: 18px; border-radius: 15px; margin-top: 25px; font-weight: 800; font-size: 14px; }
+
+        /* Pop Up IG Style */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+        .btn-ig { display: block; background: linear-gradient(45deg, #f09433, #bc1888); color: white; text-decoration: none; padding: 15px; border-radius: 12px; font-weight: 800; margin-bottom: 10px; }
+        .btn-later { background: #f1f5f9; color: #64748b; border: none; padding: 12px; width: 100%; border-radius: 12px; font-weight: 700; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="brand-header">
+        <div class="logo-box"><img src="2.webp" alt="Logo"></div>
+        <h1>JOKOWORDS</h1>
+        <p class="subtitle">HILIRISASI DOKUMEN</p>
+    </div>
+    
+    <div class="form-group">
+        <div class="input-wrapper">
+            <i class="fa-solid fa-user-tag"></i>
+            <input type="text" id="namaInput" placeholder="Masukkan Nama Lengkap Antum...">
+        </div>
+        <button onclick="cariInvoice()">
+            <span id="btnText">CEK PROGRES PESANAN</span>
+            <div id="loader" style="display:none" class="fa-solid fa-circle-notch fa-spin"></div>
+        </button>
+    </div>
+
+    <div id="result-container"></div>
+</div>
+
+<div class="modal-overlay" id="igModal">
+    <div class="modal-content">
+        <i class="fa-brands fa-instagram" style="font-size: 50px; color: #E1306C; margin-bottom: 15px;"></i>
+        <p style="font-weight: 600;">Mau Terjemah/Taukil lagi?<br>Yuk, Jokowords aja.</p>
+        <a href="https://www.instagram.com/arifabdrohim?igsh=YnRwZGdsNTlxdjQ1" target="_blank" class="btn-ig">DM INSTAGRAM</a>
+        <button class="btn-later" onclick="closeModal()">Nanti Saja</button>
+    </div>
+</div>
+
+<script>
+const SB_URL = "https://jxjnqfhmugvhntqvmfbw.supabase.co"; 
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4am5xZmhtdWd2aG50cXZtZmJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2NTU2MTgsImV4cCI6MjA4NzIzMTYxOH0.6efkIZ371Re9-6uSHoAPbXqedzDNwgkcdFMcxY-KX3I";
+
+let cachedResults = [];
+
+function closeModal() { document.getElementById('igModal').style.display = 'none'; }
+
+async function cariInvoice() {
+    const input = document.getElementById('namaInput').value.trim();
+    if(!input) return alert("Masukkan nama lengkap Anda!");
+
+    document.getElementById('btnText').style.display = 'none';
+    document.getElementById('loader').style.display = 'inline-block';
+    const container = document.getElementById('result-container');
+    container.style.display = 'none';
+
+    try {
+        const response = await fetch(`${SB_URL}/rest/v1/Jokowords?nama_pelanggan=ilike.*${input}*&select=*`, {
+            headers: { "apikey": SB_KEY, "Authorization": `Bearer ${SB_KEY}` }
+        });
+        cachedResults = await response.json();
+
+        if (cachedResults.length === 0) {
+            alert("Data tidak ditemukan. Pastikan nama lengkap benar.");
+        } else if (cachedResults.length === 1) {
+            tampilkanData(0);
+        } else {
+            // Jika ada nama ganda, suruh pilih
+            let html = `<div class="selection-box"><p class="label">Beberapa nama ditemukan, pilih nama lengkap Anda:</p>`;
+            cachedResults.forEach((item, index) => {
+                html += `<div class="select-item" onclick="tampilkanData(${index})">${item.nama_pelanggan} <i class="fa-solid fa-chevron-right"></i></div>`;
+            });
+            html += `</div>`;
+            container.innerHTML = html;
+            container.style.display = 'block';
+        }
+    } catch (e) {
+        alert("Gagal memuat data.");
+    } finally {
+        document.getElementById('btnText').style.display = 'inline-block';
+        document.getElementById('loader').style.display = 'none';
+    }
+}
+
+function tampilkanData(index) {
+    const data = cachedResults[index];
+    const status = (data.status || "PROSES").toUpperCase();
+    const container = document.getElementById('result-container');
+
+    // Generate detail status items
+    const detailStr = data.detail_status || "";
+    let progresHtml = detailStr.split('\n').map(item => {
+        if(!item.trim()) return "";
+        let teks = item.replace(/::|✅|⏳/g, '').trim();
+        let icon = item.includes('::') || item.includes('⏳') ? '<i class="fa-solid fa-spinner fa-spin" style="color:#f59e0b"></i>' : '<i class="fa-solid fa-circle-check" style="color:#10b981"></i>';
+        return `<div class="detail-row"><span class="doc-name">${teks}</span><span>${icon}</span></div>`;
+    }).join('');
+
+    // Generate Price Breakdown (Hanya jika Selesai)
+    let priceHtml = "";
+    if (status === "SELESAI") {
+        const listLayanan = data.layanan_json || [];
+        let totalKotor = 0;
+        let breakdown = listLayanan.map(item => {
+            const sub = (item.qty || 0) * (item.price || 0);
+            totalKotor += sub;
+            return `<div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px;"><span>${item.desk}</span><span class="value">Rp ${sub.toLocaleString()}</span></div>`;
+        }).join('');
+        
+        const disc = data.diskon || 0;
+        priceHtml = `
+            <div style="border-top: 2px dashed #e2e8f0; margin: 20px 0; padding-top:15px;">
+                <span class="label" style="color:var(--primary)">Rincian Biaya</span>
+                ${breakdown}
+                <div class="total-section">
+                    <div>
+                        <span class="label">Total</span>
+                        <span style="text-decoration:line-through; font-size:12px; color:#94a3b8">Rp ${totalKotor.toLocaleString()}</span>
+                    </div>
+                    <div class="final-price">Rp ${(totalKotor - disc).toLocaleString()}</div>
+                </div>
+                <a href="${data.file_link || '#'}" class="btn-download"><i class="fa-solid fa-file-pdf"></i> DOWNLOAD HASIL</a>
+            </div>`;
+    }
+
+    container.innerHTML = `
+        <div class="invoice-card">
+            <div class="status-badge ${status === 'SELESAI' ? 'status-selesai' : 'status-proses'}">${status}</div>
+            <div class="info-grid">
+                <div style="grid-column: span 2;">
+                    <span class="label">Nama Pemesan</span>
+                    <span class="value" style="font-size: 18px;">${data.nama_pelanggan}</span>
+                </div>
+                <div class="service-list">
+                    <span class="label" style="margin-bottom: 12px; color: var(--primary);">Progres Dokumen</span>
+                    ${progresHtml}
+                </div>
+                <div><span class="label">Tgl Masuk</span><span class="value">${data.tgl_pesan || "-"}</span></div>
+                <div><span class="label">Estimasi</span><span class="value">${data.tgl_estimasi || "-"}</span></div>
+            </div>
+            ${priceHtml}
+        </div>
+    `;
+    container.style.display = 'block';
+
+    // POP UP IG SETELAH 5 DETIK
+    setTimeout(() => {
+        document.getElementById('igModal').style.display = 'flex';
+    }, 5000);
+}
+</script>
+</body>
+</html>
